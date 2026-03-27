@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSC Monitoring · Puertollano 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* VML The Cocktail palette: clean white, deep ink, bold accents */
+  --bg:       #ffffff;
+  --bg-2:     #f4f3f0;
+  --bg-dark:  #111110;
+  --ink:      #111110;
+  --mid:      #6b6b65;
+  --rule:     #e2e0da;
+  --accent:   #ff4d1c;      /* VML warm orange-red accent */
+  --accent-2: #1a1a6e;      /* deep navy */
+  --red:      #d42b22;
+  --red-pale: #fde8e7;
+  --amber:    #b85c00;
+  --amber-pale:#fef3e0;
+  --green:    #1a6b3c;
+  --green-pale:#e5f5ec;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --display: 'Syne', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+.reveal { animation: fadeUp .5s cubic-bezier(.22,.61,.36,1) both; }
+.d1{animation-delay:.04s} .d2{animation-delay:.1s}
+.d3{animation-delay:.16s} .d4{animation-delay:.22s}
+.d5{animation-delay:.3s}  .d6{animation-delay:.38s}
+.d7{animation-delay:.46s} .d8{animation-delay:.54s}
+.d9{animation-delay:.62s}
+
+/* ─── HEADER ──────────────────────────────────── */
+header {
+  background: var(--bg-dark);
+  padding: 28px 52px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+.logo-mark {
+  width: 34px; height: 34px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.header-brand {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #ffffff60;
+}
+.header-title {
+  font-family: var(--display);
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1;
+  color: #fff;
+}
+.header-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+.header-meta {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: #ffffff45;
+  line-height: 1.9;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  padding: 4px 12px 4px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.status-pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* ─── KPI STRIP ───────────────────────────────── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--bg-dark);
+  border-top: 1px solid #ffffff10;
+}
+.kpi {
+  padding: 22px 28px 26px;
+  border-right: 1px solid #ffffff10;
+}
+.kpi:last-child { border-right: none; }
+.kpi-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #ffffff35;
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+.kpi-value.red   { color: var(--accent); }
+.kpi-value.amber { color: #f5a623; }
+.kpi-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #ffffff30;
+  margin-top: 4px;
+}
+
+/* ─── TABS NAV ────────────────────────────────── */
+.tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  padding: 0 52px;
+}
+.tab-btn {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 16px 0;
+  margin-right: 36px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--mid);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .2s, border-color .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
+.tab-count {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: var(--bg-2);
+  color: var(--mid);
+}
+.tab-btn.active .tab-count { background: var(--accent); color: #fff; }
+
+/* ─── TAB PANELS ──────────────────────────────── */
+.tab-panel { display: none; flex: 1; }
+.tab-panel.active { display: block; }
+
+/* ══════════════════════════════════════════
+   TAB 1 — ANÁLISIS CUALITATIVO
+══════════════════════════════════════════ */
+.analysis-panel {
+  background: var(--bg);
+  padding: 52px;
+}
+
+/* Section divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  margin-top: 48px;
+}
+.section-divider:first-child { margin-top: 0; }
+.sd-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .1em;
+}
+.sd-title {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.sd-line { flex: 1; height: 1px; background: var(--rule); }
+
+/* ── HORIZONTAL SIGNAL CARDS ─────────────────── */
+.h-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.h-card {
+  background: var(--bg-2);
+  padding: 32px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+.h-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+.h-card.signal::after { background: var(--accent); }
+.h-card.risk::after   { background: #f5a623; }
+.h-card.low::after    { background: var(--green); }
+.h-card:hover { background: #eceae4; }
+
+.hc-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+.hc-headline {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.hc-body {
+  font-size: 12.5px;
+  color: #555550;
+  line-height: 1.7;
+}
+.hc-body strong { color: var(--ink); font-weight: 500; }
+
+.quote-strip {
+  border-left: 2px solid var(--accent);
+  padding: 8px 14px;
+  margin: 14px 0 0;
+  background: #fff;
+}
+.qs-text {
+  font-size: 11.5px;
+  color: var(--ink);
+  line-height: 1.6;
+  font-style: italic;
+}
+.qs-attr {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  color: var(--mid);
+  margin-top: 4px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.signal-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--mid);
+}
+.signal-track { flex:1; height:2px; background:var(--rule); border-radius:2px; overflow:hidden; }
+.signal-fill  { height:100%; border-radius:2px; }
+.fill-red    { background: var(--accent); }
+.fill-amber  { background: #f5a623; }
+.fill-green  { background: var(--green); }
+
+/* ── ESCALATION STRIP ────────────────────────── */
+.esc-strip {
+  background: var(--bg-dark);
+  padding: 20px 36px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  margin-bottom: 2px;
+}
+.esc-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #ffffff35;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+.esc-steps { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.esc-step {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: #ffffff70;
+  padding: 4px 10px;
+  background: #ffffff08;
+  border: 1px solid #ffffff18;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.esc-step.end { border-color: var(--accent); color: #ff9070; }
+.esc-arrow { color: var(--accent); font-size: 10px; flex-shrink:0; }
+
+/* ── RISK CARDS (same h-cards grid) ─────────── */
+/* reuses .h-cards and .h-card */
+
+.risk-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 14px;
+}
+.rmc {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 12px 14px;
+}
+.rmc-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 4px;
+}
+.rmc-val {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+}
+.rmc-val.r { color: var(--accent); }
+.rmc-val.a { color: #e07b00; }
+.rmc-val.g { color: #999; }
+.rmc-note { font-size: 9.5px; color: #999; margin-top: 2px; }
+
+/* ── ACCIONES PRIORITARIAS ───────────────────── */
+.actions-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.action-card {
+  background: var(--bg-dark);
+  padding: 28px 28px 32px;
+  position: relative;
+}
+.ac-num {
+  font-family: var(--display);
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 14px;
+  opacity: .9;
+}
+.ac-title {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.ac-body {
+  font-size: 12px;
+  color: #9a9488;
+  line-height: 1.65;
+}
+.ac-body strong { color: #d4cfc6; }
+
+/* ── METHODOLOGY STRIP ───────────────────────── */
+.method-strip {
+  background: var(--bg-2);
+  padding: 20px 36px;
+  margin-top: 2px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.ms-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+.ms-body {
+  font-size: 11.5px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════
+   TAB 2 — TIMELINE
+══════════════════════════════════════════ */
+.timeline-panel {
+  padding: 52px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.tl-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.tl-title {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.tl-rule { flex:1; height:1px; background:var(--rule); }
+.tl-total { font-family: var(--mono); font-size: 10px; color: var(--mid); }
+
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content:''; position:absolute;
+  left:0; top:0; bottom:0; width:1px; background:var(--rule);
+}
+
+.event {
+  position: relative;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.event:hover { box-shadow: 4px 4px 0 var(--ink); transform: translate(-2px,-2px); }
+.event::before {
+  content:''; position:absolute;
+  left:-33px; top:26px;
+  width:10px; height:10px;
+  border-radius:50%;
+  border:2px solid var(--bg);
+  z-index:1;
+}
+.event.critico { border-left:4px solid var(--accent); }
+.event.critico::before { background:var(--accent); }
+.event.alto    { border-left:4px solid #f5a623; }
+.event.alto::before    { background:#f5a623; }
+.event.medio   { border-left:4px solid #aaa; }
+.event.medio::before   { background:#aaa; }
+.event.bajo    { border-left:4px solid var(--green); }
+.event.bajo::before    { background:var(--green); }
+
+.event-inner { padding: 20px 24px 16px; }
+.event-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.event-top-left { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.b-critico { background:var(--red-pale);   color:var(--red); }
+.b-alto    { background:var(--amber-pale); color:var(--amber); }
+.b-medio   { background:#f3f4f6; color:#6b7280; }
+.b-bajo    { background:var(--green-pale); color:var(--green); }
+.b-neg     { background:var(--red-pale);   color:var(--red); }
+.b-pos     { background:var(--green-pale); color:var(--green); }
+.b-neu     { background:#f3f4f6; color:#6b7280; }
+
+.event-top-right { display:flex; align-items:center; gap:14px; flex-shrink:0; }
+.event-date {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.news-count {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  width:48px; height:48px;
+  border:1.5px solid var(--rule);
+  background:var(--bg-2);
+  flex-shrink:0;
+}
+.nc-num {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+.nc-label {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: 1px;
+}
+.event.critico .news-count { border-color:var(--accent); }
+.event.critico .nc-num     { color:var(--accent); }
+.event.alto    .news-count { border-color:#f5a623; }
+.event.alto    .nc-num     { color:#e07b00; }
+.event.bajo    .news-count { border-color:var(--green); }
+.event.bajo    .nc-num     { color:var(--green); }
+
+.event-title {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.event-body {
+  font-size: 12.5px;
+  color: #555;
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.event-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.htag { font-family:var(--mono); font-size:10px; color:var(--accent-2); }
+.event-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 12px 24px 14px;
+  border-top: 1px solid var(--rule);
+  background: var(--bg-2);
+}
+.ef-label {
+  font-family:var(--mono); font-size:8.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--mid); margin-bottom:3px;
+}
+.ef-value { font-size:11.5px; font-weight:500; }
+.ef-sub   { font-size:11px; color:#777; }
+
+/* ─── FOOTER ──────────────────────────────────── */
+footer {
+  background: var(--bg-dark);
+  color: #ffffff25;
+  padding: 18px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+footer span:first-child { color: #ffffff40; }
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .h-cards, .actions-row { grid-template-columns: 1fr; }
+  .risk-mini-grid { grid-template-columns: 1fr 1fr; }
+  .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+  .kpi:nth-child(4), .kpi:nth-child(5) { border-top:1px solid #ffffff10; }
+}
+@media (max-width: 720px) {
+  header { padding:24px 24px 20px; grid-template-columns:1fr; }
+  .analysis-panel, .timeline-panel { padding:28px 20px; }
+  .tabs-nav { padding:0 20px; }
+  .risk-mini-grid { grid-template-columns:1fr 1fr; }
+  footer { padding:16px 20px; flex-direction:column; gap:6px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="reveal d1">
+  <div>
+    <div class="header-top">
+      <div class="logo-mark"></div>
+      <span class="header-brand">VML The Cocktail · Intelligence & Data</span>
+    </div>
+    <h1 class="header-title">RSC Monitoring <em>/</em> Puertollano</h1>
+  </div>
+  <div class="header-meta">
+    <span class="status-pill">Alerta activa</span><br>
+    Q1 · 2026 &nbsp;·&nbsp; 27 Mar 2026<br>
+    12 eventos &nbsp;·&nbsp; 3 meses
+  </div>
+</header>
+
+<!-- ══════════ KPI STRIP ══════════ -->
+<div class="kpi-strip reveal d2">
+  <div class="kpi">
+    <p class="kpi-label">Alertas Críticas</p>
+    <p class="kpi-value red">03</p>
+    <p class="kpi-sub">↑ escalada desde enero</p>
+  </div>
+  <div class="kpi">
+    <p class="kpi-label">Sentimiento Prev.</p>
+    <p class="kpi-value red">NEG</p>
+    <p class="kpi-sub">10 de 12 eventos</p>
+  </div>
+  <div class="kpi">
+    <p class="kpi-label">Conflicto Laboral</p>
+    <p class="kpi-value amber">Alto</p>
+    <p class="kpi-sub">En escalada activa</p>
+  </div>
+  <div class="kpi">
+    <p class="kpi-label">Actores Movilizados</p>
+    <p class="kpi-value">08</p>
+    <p class="kpi-sub">Sindicatos · IU · VOX</p>
+  </div>
+  <div class="kpi">
+    <p class="kpi-label">Intervención Inst.</p>
+    <p class="kpi-value red">NULA</p>
+    <p class="kpi-sub">Sin mediación pública</p>
+  </div>
+</div>
+
+<!-- ══════════ TABS NAV ══════════ -->
+<nav class="tabs-nav reveal d3">
+  <button class="tab-btn active" onclick="switchTab('analysis',this)">
+    Análisis Cualitativo <span class="tab-count">5</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('timeline',this)">
+    Timeline de Eventos <span class="tab-count">12</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 1 — ANÁLISIS CUALITATIVO
+══════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-analysis">
+<div class="analysis-panel">
+
+  <!-- SEÑALES DOMINANTES -->
+  <div class="section-divider reveal d4">
+    <span class="sd-num">01 — 02</span>
+    <span class="sd-title">Señales Dominantes</span>
+    <span class="sd-line"></span>
+  </div>
+
+  <div class="h-cards reveal d4">
+    <div class="h-card signal">
+      <p class="hc-eyebrow">01 · Señal Dominante</p>
+      <h3 class="hc-headline">El conflicto ha migrado al terreno de la seguridad industrial</h3>
+      <p class="hc-body">Lo más significativo del Q1/2026 no es la magnitud de la reestructuración (31 puestos), sino el <strong>marco discursivo</strong> elegido por los sindicatos. Al señalar la unidad Coquer como punto de riesgo operacional, el conflicto laboral se convierte en un debate de <strong>seguridad industrial</strong> con implicaciones regulatorias y reputacionales que superan cualquier negociación salarial.</p>
+      <div class="quote-strip">
+        <p class="qs-text">«Se van a reducir operadores en la unidad con más carga de trabajo. Esperemos que esto no nos traiga accidentes.»</p>
+        <p class="qs-attr">— Operario de la unidad Coquer · MiCiudadReal, 17 mar 2026</p>
+      </div>
+      <div class="signal-bar">
+        <span>Intensidad de señal</span>
+        <div class="signal-track"><div class="signal-fill fill-red" style="width:88%"></div></div>
+        <span>88%</span>
+      </div>
+    </div>
+
+    <div class="h-card signal">
+      <p class="hc-eyebrow">02 · Paradoja Corporativa</p>
+      <h3 class="hc-headline">10.000 M€ de inversión y 31 puestos eliminados: la contradicción como arma</h3>
+      <p class="hc-body">La simultaneidad entre el Capital Markets Day (10.000 M€, planta renovable en marcha) y la comunicación de la reestructuración ha sido una <strong>catástrofe de narrativa</strong>. Los sindicatos capitalizaron esta contradicción con eficacia notable. La pregunta «¿inversión para quién?» resuena en comentarios ciudadanos y comunicados de IU y CCOO. Sin coherencia en la comunicación interna, cada anuncio positivo alimenta el malestar.</p>
+      <div class="signal-bar" style="margin-top:auto; padding-top:16px">
+        <span>Credibilidad corporativa</span>
+        <div class="signal-track"><div class="signal-fill fill-amber" style="width:22%"></div></div>
+        <span>Baja</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIESGOS & ESCENARIOS -->
+  <div class="section-divider reveal d5" style="margin-top:40px">
+    <span class="sd-num">03 — 04</span>
+    <span class="sd-title">Riesgos & Escenarios</span>
+    <span class="sd-line"></span>
+  </div>
+
+  <div class="h-cards reveal d5">
+    <div class="h-card risk">
+      <p class="hc-eyebrow">03 · Riesgo de Licencia Social</p>
+      <h3 class="hc-headline">El hidrógeno verde como pasivo reputacional activo</h3>
+      <p class="hc-body">El abandono del proyecto de hidrógeno verde —con 10 M€ de fondos públicos sin ejecutar— convierte a Puertollano en el caso más citado del debate nacional sobre <strong>greenwashing energético</strong>. La reconversión a biohidrógeno no ha mitigado la percepción negativa. En 2026, Repsol admite que la inviabilidad es <strong>estructural</strong>, cerrando la ventana de una salida narrativa creíble a corto plazo.</p>
+      <div class="signal-bar" style="margin-top:14px">
+        <span>Riesgo regulatorio</span>
+        <div class="signal-track"><div class="signal-fill fill-amber" style="width:70%"></div></div>
+        <span>Alto</span>
+      </div>
+    </div>
+
+    <div class="h-card risk">
+      <p class="hc-eyebrow">04 · Vector de Escalada · Ene → Mar 2026</p>
+      <h3 class="hc-headline">Cinco etapas en once semanas — sin desescalada documentada</h3>
+      <div class="esc-strip" style="margin:14px -36px 14px; padding:16px 36px;">
+        <span class="esc-label">Progresión</span>
+        <div class="esc-steps">
+          <span class="esc-step">Fuga oleoducto</span>
+          <span class="esc-arrow">›</span>
+          <span class="esc-step">CMD / Inversión</span>
+          <span class="esc-arrow">›</span>
+          <span class="esc-step">31 puestos</span>
+          <span class="esc-arrow">›</span>
+          <span class="esc-step">Concentraciones</span>
+          <span class="esc-arrow">›</span>
+          <span class="esc-step end">Bloqueo físico</span>
+        </div>
+      </div>
+      <p class="hc-body" style="margin-bottom:12px">El arco de once semanas muestra escalada continua sin pausas. El bloqueo del 26/03 es la primera acción que afecta directamente la operativa del complejo y genera cobertura en medios nacionales.</p>
+      <div class="risk-mini-grid">
+        <div class="rmc"><p class="rmc-label">Prob. huelga</p><p class="rmc-val r">ALTA</p><p class="rmc-note">Sin mediación activa</p></div>
+        <div class="rmc"><p class="rmc-label">Incidente operac.</p><p class="rmc-val a">MEDIA</p><p class="rmc-note">Si se ejecuta en Coquer</p></div>
+        <div class="rmc"><p class="rmc-label">Cobertura nac.</p><p class="rmc-val r">ALTA</p><p class="rmc-note">Ya en El Diario</p></div>
+        <div class="rmc"><p class="rmc-label">Interv. Junta CLM</p><p class="rmc-val g">BAJA</p><p class="rmc-note">Sin señales</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCIONES PRIORITARIAS -->
+  <div class="section-divider reveal d6" style="margin-top:40px">
+    <span class="sd-num">05</span>
+    <span class="sd-title">Acciones Prioritarias</span>
+    <span class="sd-line"></span>
+  </div>
+
+  <div class="actions-row reveal d6">
+    <div class="action-card">
+      <p class="ac-num">01</p>
+      <p class="ac-title">Mediación Urgente</p>
+      <p class="ac-body">Activar diálogo con los comités antes de que la Coordinadora de contratas ejecute la amenaza de huelga general. El silencio actual <strong>cede el relato</strong> completamente a los sindicatos.</p>
+    </div>
+    <div class="action-card">
+      <p class="ac-num">02</p>
+      <p class="ac-title">Auditoría de Seguridad en Coquer</p>
+      <p class="ac-body">Las denuncias sobre reducción de supervisión exigen una respuesta <strong>verificable e independiente</strong>. El riesgo legal y reputacional ante un incidente es máximo con el conflicto activo.</p>
+    </div>
+    <div class="action-card">
+      <p class="ac-num">03</p>
+      <p class="ac-title">Coherencia Narrativa</p>
+      <p class="ac-body">Alinear los mensajes de inversión renovable con las condiciones laborales reales. La contradicción CMD + reestructuración es el <strong>principal activo comunicativo</strong> de los sindicatos.</p>
+    </div>
+    <div class="action-card">
+      <p class="ac-num">04</p>
+      <p class="ac-title">Estrategia Verde Creíble</p>
+      <p class="ac-body">La devolución o reasignación transparente de los <strong>10 M€ del hidrógeno</strong> es la única salida que cierra el pasivo reputacional ante colectivos ecologistas y medios especializados.</p>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="method-strip reveal d7">
+    <span class="ms-label">Metodología</span>
+    <p class="ms-body">Monitorización de medios locales (Lanza Digital, MiCiudadReal, La Comarca, La Voz de Puertollano), medios nacionales (El Diario CLM), comunicados sindicales oficiales (@CCOOclm, @STR_Sindicato vía X), notas corporativas (Repsol Puertollano) y medios especializados (El Salto, Biodiversidadla.org, Energías Renovables). No se incluyen fuentes sin verificar.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 2 — TIMELINE
+══════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-timeline">
+<div class="timeline-panel">
+
+  <div class="tl-header reveal d4">
+    <span class="tl-title">Timeline de Inteligencia Social</span>
+    <span class="tl-rule"></span>
+    <span class="tl-total">12 eventos · Q1 2026</span>
+  </div>
+
+  <div class="timeline">
+
+    <article class="event critico reveal d4">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-critico">Crítico</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">6</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">26 Mar 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Movilización masiva y corte de accesos al complejo</h3>
+        <p class="event-body">Centenar de trabajadores desde las 6h. El comité de Repsol Materials bloquea brevemente la rotonda de acceso. El discurso escala a la <strong>seguridad operacional</strong>: reducción de supervisores en Coquer señalada como riesgo de accidente. STR publica vídeo en X. Cobertura nacional en El Diario CLM.</p>
+        <div class="event-tags">
+          <span class="htag">#SeguridadIndustrial</span>
+          <span class="htag">#CoquerRiesgo</span>
+          <span class="htag">@STR_Sindicato</span>
+        </div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Presencial + X</p><p class="ef-sub">El Diario CLM · Lanza Digital</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">STR · CCOO · UGT</p><p class="ef-sub">Comités Fuels & Materials</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Parcial</p><p class="ef-sub">Repsol: «seguridad garantizada»</p></div>
+      </div>
+    </article>
+
+    <article class="event critico reveal d5">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-critico">Crítico</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">9</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">16 – 24 Mar 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Escalada de concentraciones: 3 actos en 8 días</h3>
+        <p class="event-body">Comunicado de rechazo (16/03) → concentración Puerta 1 (23/03) → concentración PEBD con vídeo en X (24/03). CCOO, UGT y STR coordinados a nivel nacional junto a Tarragona. IU Puertollano suma apoyo político. <em>«Esto no va de sindicatos, va de trabajadores.»</em></p>
+        <div class="event-tags">
+          <span class="htag">#ContraLosRecortesRepsol</span>
+          <span class="htag">@CCOOclm</span>
+          <span class="htag">@STR_Sindicato</span>
+        </div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">X · Prensa local</p><p class="ef-sub">MiCiudadReal · Lanza Digital</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">STR · CCOO · UGT · IU</p><p class="ef-sub">Comités Fuels & Materials</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Corporativa</p><p class="ef-sub">«Procedimiento habitual en el sector»</p></div>
+      </div>
+    </article>
+
+    <article class="event critico reveal d5">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-critico">Crítico</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">4</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">Mar 2026 (acum.)</time>
+          </div>
+        </div>
+        <h3 class="event-title">Contratas en conflicto: patrón acumulado de externalización</h3>
+        <p class="event-body">RLESA (única planta de lubricantes de España) desconvocó una huelga indefinida de 39 días «por miedo a perder puestos» tras presiones corporativas. Coordinadora de contratas amenaza con huelga general si no se resuelve la subrogación de Eserman y el convenio del metal.</p>
+        <div class="event-tags"><span class="htag">#ContratistasRepsol</span><span class="htag">#Eserman</span><span class="htag">#RLESA</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Prensa local</p><p class="ef-sub">La Voz de Puertollano · alertatrabajo.com</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">STR · TIR · UGT FICA</p><p class="ef-sub">Coordinadora contratas · Jdo. Social Nº3</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Sin acuerdo</p><p class="ef-sub">Sin mediación documentada</p></div>
+      </div>
+    </article>
+
+    <article class="event alto reveal d6">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-alto">Alto</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">7</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">Feb – Mar 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Crisis de licencia social verde: hidrógeno abandonado</h3>
+        <p class="event-body">Debate acumulado sobre el abandono del proyecto de hidrógeno verde en La Sevillana tras captar 10 M€ de fondos públicos. Repsol reconoce inviabilidad estructural. Reconversión a «biohidrógeno» calificada como greenwashing. Alianza Verde exige devolución de fondos en el Congreso.</p>
+        <div class="event-tags"><span class="htag">#HidrogenoVerde</span><span class="htag">#Greenwashing</span><span class="htag">#FondosPublicos</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Medios especializados</p><p class="ef-sub">El Salto · Biodiversidadla.org</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">Alianza Verde · Podemos</p><p class="ef-sub">IDAE · Min. Transición Ecológica</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Corporativa</p><p class="ef-sub">Anuncio planta biocombustibles Q2/2026</p></div>
+      </div>
+    </article>
+
+    <article class="event alto reveal d6">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-alto">Alto</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">5</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">16 Mar 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Comunicación: 31 puestos estructurales eliminados</h3>
+        <p class="event-body">Dirección comunica eliminación de 31 puestos (14 en Materials, 17 en Fuels). Comités: <em>«Es indecente tras 2.568 M€ de beneficios, incremento del 17% del salario del CEO y dividendos millonarios.»</em> Repsol: puestos reubicados sin afectación al empleo.</p>
+        <div class="event-tags"><span class="htag">#ReestructuraciónRepsol</span><span class="htag">#31Puestos</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Medios locales</p><p class="ef-sub">MiCiudadReal · ENCLM · Lanza Digital</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">CCOO · UGT · STR · IU</p><p class="ef-sub">Comités Fuels & Materials</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Corporativa</p><p class="ef-sub">«Reubicación, sin afectación al empleo»</p></div>
+      </div>
+    </article>
+
+    <article class="event alto reveal d7">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-alto">Alto</span>
+            <span class="badge b-neg">Negativo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">8</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">14 Ene 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Incidente operacional: fuga oleoducto Calasparra</h3>
+        <p class="event-body">Fuga de crudo en el oleoducto Cartagena–Puertollano detectada por un agricultor. Afecta ~4.000 m². Repsol detecta manipulación ajena (sistema de extracción ilegal). Refinería ajusta producción preventivamente. Investigación de Seprona y Confederación Hidrográfica del Segura.</p>
+        <div class="event-tags"><span class="htag">#FugaOleoducto</span><span class="htag">#VertidoPetroleo</span><span class="htag">#Calasparra</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Medios regionales</p><p class="ef-sub">Lanza Digital · Murcia Plaza · 112</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">Guardia Civil (Seprona)</p><p class="ef-sub">CHS · Ayto. Calasparra · IU Murcia</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Múltiple</p><p class="ef-sub">Repsol + GC + CHS + Admón. local</p></div>
+      </div>
+    </article>
+
+    <article class="event medio reveal d7">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-medio">Medio</span>
+            <span class="badge b-neu">Neutral</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">2</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">24 Feb 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Reunión VOX–Repsol: debate sobre continuidad regulatoria</h3>
+        <p class="event-body">VOX y representantes de Repsol debaten la continuidad de la refinería frente a la normativa europea. VOX alerta de «riesgo real de desindustrialización». Sin impacto operacional directo, pero relevante para el mapa político ante una eventual crisis mayor.</p>
+        <div class="event-tags"><span class="htag">#SoberaníaEnergética</span><span class="htag">#DefensaRefinería</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Comunicado político</p><p class="ef-sub">La Comarca · Lanza Digital</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">VOX · Repsol</p><p class="ef-sub">J.M. Figaredo · R. Chamorro</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Sí</p><p class="ef-sub">Nota corporativa + comunicado VOX</p></div>
+      </div>
+    </article>
+
+    <article class="event bajo reveal d8">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-bajo">Bajo</span>
+            <span class="badge b-pos">Positivo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">4</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">20 Ene 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Nuevo director del complejo: Antonio Lorenzo</h3>
+        <p class="event-body">Antonio Lorenzo efectivo como director. Subraya «personas, seguridad y digitalización» como ejes. Nombrado Colegiado de Honor por el Colegio de Ing. Química CLM. Estrena cargo semanas antes de que estalle el conflicto laboral más intenso del año.</p>
+        <div class="event-tags"><span class="htag">#NuevoDirector</span><span class="htag">#TransformaciónIndustrial</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Sala de prensa</p><p class="ef-sub">Repsol Puertollano · La Comarca</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">Repsol</p><p class="ef-sub">Colegio de Ing. Química CLM</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Corporativa</p><p class="ef-sub">Comunicado de presentación oficial</p></div>
+      </div>
+    </article>
+
+    <article class="event bajo reveal d8">
+      <div class="event-inner">
+        <div class="event-top">
+          <div class="event-top-left">
+            <span class="badge b-bajo">Bajo</span>
+            <span class="badge b-pos">Positivo</span>
+          </div>
+          <div class="event-top-right">
+            <div class="news-count"><span class="nc-num">5</span><span class="nc-label">noticias</span></div>
+            <time class="event-date">9 Ene 2026</time>
+          </div>
+        </div>
+        <h3 class="event-title">Capital Markets Day: planta renovable Puertollano Q2/2026</h3>
+        <p class="event-body">Plan de 8.500–10.000 M€ hasta 2028. Planta de combustibles 100% renovables (200.000 t/año) en Q2/2026. Dividendo incrementado un 7,8%. La narrativa de este día contrasta directamente con la reestructuración anunciada 10 semanas después, convirtiéndose en el argumento central de la oposición sindical.</p>
+        <div class="event-tags"><span class="htag">#CapitalMarketsDay</span><span class="htag">#RenovablesPuertollano</span></div>
+      </div>
+      <div class="event-footer">
+        <div><p class="ef-label">Plataforma</p><p class="ef-value">Comunicado corporativo</p><p class="ef-sub">Repsol.com · Lanza Digital</p></div>
+        <div><p class="ef-label">Actores</p><p class="ef-value">Repsol (dirección)</p><p class="ef-sub">Inversores / Accionistas</p></div>
+        <div><p class="ef-label">Intervención</p><p class="ef-value">Corporativa</p><p class="ef-sub">Presentación a inversores</p></div>
+      </div>
+    </article>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <span>© 2026 VML The Cocktail · Internal Monitoring · Confidencial</span>
+  <span>Lanza Digital · MiCiudadReal · El Diario CLM · La Comarca · @CCOOclm · @STR_Sindicato · Repsol Sala de Prensa</span>
+</footer>
+
+<script>
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

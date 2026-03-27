@@ -611,19 +611,93 @@ footer {
 }
 footer span:first-child { color: #ffffff40; }
 
+/* ── INCIDENT CARD (full-width, amber tone) ───── */
+.h-card.incident { background: #fffbf5; }
+.h-card.incident::after { background: #e07b00; }
+.h-card.incident:hover { background: #fef5e4; }
+.incident-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 16px;
+}
+.inc-fact {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 12px 14px;
+}
+.inc-fact-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 3px;
+}
+.inc-fact-val {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
 /* ─── RESPONSIVE ──────────────────────────────── */
 @media (max-width: 1024px) {
   .h-cards, .actions-row { grid-template-columns: 1fr; }
   .risk-mini-grid { grid-template-columns: 1fr 1fr; }
+  .incident-row   { grid-template-columns: 1fr 1fr; }
   .kpi-strip { grid-template-columns: repeat(3, 1fr); }
   .kpi:nth-child(4), .kpi:nth-child(5) { border-top:1px solid #ffffff10; }
 }
 @media (max-width: 720px) {
-  header { padding:24px 24px 20px; grid-template-columns:1fr; }
-  .analysis-panel, .timeline-panel { padding:28px 20px; }
-  .tabs-nav { padding:0 20px; }
-  .risk-mini-grid { grid-template-columns:1fr 1fr; }
-  footer { padding:16px 20px; flex-direction:column; gap:6px; text-align:center; }
+  /* Header: stack vertically, no overflow */
+  header {
+    padding: 20px 20px 18px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .header-top { gap: 12px; }
+  .logo-mark  { width: 28px; height: 28px; }
+  .header-brand { font-size: 9px; letter-spacing: .14em; }
+  .header-title { font-size: 28px; }
+  .header-meta {
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+  }
+  .status-pill { margin-bottom: 0; }
+
+  /* KPI strip: 2 cols */
+  .kpi-strip { grid-template-columns: 1fr 1fr; }
+  .kpi { padding: 16px 18px; }
+  .kpi-value { font-size: 30px; }
+  .kpi:nth-child(odd):last-child { grid-column: 1/-1; }
+  .kpi:nth-child(3), .kpi:nth-child(4), .kpi:nth-child(5) { border-top: 1px solid #ffffff10; }
+  .kpi:nth-child(even) { border-right: none; }
+
+  /* Tabs */
+  .tabs-nav { padding: 0 16px; overflow-x: auto; }
+  .tab-btn  { margin-right: 20px; padding: 14px 0; font-size: 11px; white-space: nowrap; }
+
+  /* Panels */
+  .analysis-panel { padding: 24px 16px; }
+  .timeline-panel { padding: 24px 16px; }
+  .timeline       { padding-left: 20px; }
+
+  /* h-cards full-width on mobile */
+  .h-cards, .actions-row, .incident-row, .risk-mini-grid { grid-template-columns: 1fr; }
+  .h-card { padding: 24px 20px; }
+  .action-card { padding: 22px 20px 26px; }
+  .esc-strip { margin: 14px -20px 14px; padding: 14px 20px; }
+
+  /* Event footer stacks */
+  .event-footer { grid-template-columns: 1fr; gap: 8px; padding: 12px 16px; }
+  .event-inner  { padding: 16px 16px 12px; }
+
+  footer { padding: 16px 16px; flex-direction: column; gap: 6px; text-align: center; }
 }
 </style>
 </head>
@@ -677,7 +751,7 @@ footer span:first-child { color: #ffffff40; }
 <!-- ══════════ TABS NAV ══════════ -->
 <nav class="tabs-nav reveal d3">
   <button class="tab-btn active" onclick="switchTab('analysis',this)">
-    Análisis Cualitativo <span class="tab-count">5</span>
+    Análisis Cualitativo <span class="tab-count">6</span>
   </button>
   <button class="tab-btn" onclick="switchTab('timeline',this)">
     Timeline de Eventos <span class="tab-count">12</span>
@@ -725,16 +799,58 @@ footer span:first-child { color: #ffffff40; }
     </div>
   </div>
 
+  <!-- INCIDENTE OPERACIONAL -->
+  <div class="section-divider reveal d5" style="margin-top:40px">
+    <span class="sd-num">03</span>
+    <span class="sd-title">Incidente Operacional</span>
+    <span class="sd-line"></span>
+  </div>
+
+  <div class="reveal d5">
+    <div class="h-card incident" style="border-left: 3px solid #e07b00;">
+      <p class="hc-eyebrow">03 · Vulnerabilidad de Infraestructura Crítica</p>
+      <h3 class="hc-headline">Fuga en el oleoducto Cartagena–Puertollano: sabotaje externo y parada preventiva</h3>
+      <p class="hc-body" style="max-width:72ch">A mediados de enero, un agricultor en Calasparra (Murcia) alertó al 112 de un vertido de crudo en su parcela procedente del oleoducto subterráneo de Repsol. La investigación posterior detectó una <strong>manipulación ajena a la empresa</strong>: alguien había instalado un sistema de extracción ilegal de crudo en el punto de la fuga. La refinería de Puertollano tuvo que realizar ajustes preventivos en sus unidades de producción al quedar el suministro de crudo interrumpido. El incidente es relevante no solo por el daño medioambiental (~4.000 m² de finca contaminada), sino porque expone la <strong>vulnerabilidad física de la cadena de suministro</strong> del complejo ante actores externos. La Guardia Civil (Seprona) y la Confederación Hidrográfica del Segura abrieron investigaciones paralelas para determinar si el vertido afectó a las aguas subterráneas próximas al río Quípar.</p>
+      <div class="incident-row">
+        <div class="inc-fact">
+          <p class="inc-fact-label">Superficie afectada</p>
+          <p class="inc-fact-val">~4.000 m² de finca agrícola privada · Calasparra, Murcia</p>
+        </div>
+        <div class="inc-fact">
+          <p class="inc-fact-label">Causa determinada</p>
+          <p class="inc-fact-val">Manipulación externa: sistema de extracción ilegal instalado en el oleoducto</p>
+        </div>
+        <div class="inc-fact">
+          <p class="inc-fact-label">Impacto operacional</p>
+          <p class="inc-fact-val">Parada del oleoducto + ajustes preventivos en unidades de producción de Puertollano</p>
+        </div>
+        <div class="inc-fact">
+          <p class="inc-fact-label">Actores investigadores</p>
+          <p class="inc-fact-val">Guardia Civil (Seprona) · Confederación Hidrográfica del Segura · Policía Judicial</p>
+        </div>
+      </div>
+      <div class="quote-strip" style="margin-top:16px">
+        <p class="qs-text">«El oleoducto lleva 20 años aquí; jamás imaginé que esto podría pasar. Teníamos muy buena cosecha este año, era la zona con los mejores almendros.»</p>
+        <p class="qs-attr">— Propietario de la finca afectada · El Diario Murcia, 29 may 2025</p>
+      </div>
+      <div class="signal-bar" style="margin-top:14px">
+        <span>Riesgo infraestructura</span>
+        <div class="signal-track"><div class="signal-fill fill-amber" style="width:65%"></div></div>
+        <span>Elevado</span>
+      </div>
+    </div>
+  </div>
+
   <!-- RIESGOS & ESCENARIOS -->
   <div class="section-divider reveal d5" style="margin-top:40px">
-    <span class="sd-num">03 — 04</span>
+    <span class="sd-num">04 — 05</span>
     <span class="sd-title">Riesgos & Escenarios</span>
     <span class="sd-line"></span>
   </div>
 
   <div class="h-cards reveal d5">
     <div class="h-card risk">
-      <p class="hc-eyebrow">03 · Riesgo de Licencia Social</p>
+      <p class="hc-eyebrow">04 · Riesgo de Licencia Social</p>
       <h3 class="hc-headline">El hidrógeno verde como pasivo reputacional activo</h3>
       <p class="hc-body">El abandono del proyecto de hidrógeno verde —con 10 M€ de fondos públicos sin ejecutar— convierte a Puertollano en el caso más citado del debate nacional sobre <strong>greenwashing energético</strong>. La reconversión a biohidrógeno no ha mitigado la percepción negativa. En 2026, Repsol admite que la inviabilidad es <strong>estructural</strong>, cerrando la ventana de una salida narrativa creíble a corto plazo.</p>
       <div class="signal-bar" style="margin-top:14px">
@@ -745,14 +861,16 @@ footer span:first-child { color: #ffffff40; }
     </div>
 
     <div class="h-card risk">
-      <p class="hc-eyebrow">04 · Vector de Escalada · Ene → Mar 2026</p>
-      <h3 class="hc-headline">Cinco etapas en once semanas — sin desescalada documentada</h3>
+      <p class="hc-eyebrow">05 · Vector de Escalada · Ene → Mar 2026</p>
+      <h3 class="hc-headline">Seis etapas en once semanas — sin desescalada documentada</h3>
       <div class="esc-strip" style="margin:14px -36px 14px; padding:16px 36px;">
         <span class="esc-label">Progresión</span>
         <div class="esc-steps">
           <span class="esc-step">Fuga oleoducto</span>
           <span class="esc-arrow">›</span>
           <span class="esc-step">CMD / Inversión</span>
+          <span class="esc-arrow">›</span>
+          <span class="esc-step">H₂ abandonado</span>
           <span class="esc-arrow">›</span>
           <span class="esc-step">31 puestos</span>
           <span class="esc-arrow">›</span>
@@ -761,7 +879,7 @@ footer span:first-child { color: #ffffff40; }
           <span class="esc-step end">Bloqueo físico</span>
         </div>
       </div>
-      <p class="hc-body" style="margin-bottom:12px">El arco de once semanas muestra escalada continua sin pausas. El bloqueo del 26/03 es la primera acción que afecta directamente la operativa del complejo y genera cobertura en medios nacionales.</p>
+      <p class="hc-body" style="margin-bottom:12px">El arco de once semanas muestra escalada continua sin pausas. La fuga de Calasparra —aunque externa al complejo— abrió el año con una señal de vulnerabilidad física que anticipa el patrón de fragilidad operacional que se consolida en marzo.</p>
       <div class="risk-mini-grid">
         <div class="rmc"><p class="rmc-label">Prob. huelga</p><p class="rmc-val r">ALTA</p><p class="rmc-note">Sin mediación activa</p></div>
         <div class="rmc"><p class="rmc-label">Incidente operac.</p><p class="rmc-val a">MEDIA</p><p class="rmc-note">Si se ejecuta en Coquer</p></div>
@@ -773,7 +891,7 @@ footer span:first-child { color: #ffffff40; }
 
   <!-- ACCIONES PRIORITARIAS -->
   <div class="section-divider reveal d6" style="margin-top:40px">
-    <span class="sd-num">05</span>
+    <span class="sd-num">06</span>
     <span class="sd-title">Acciones Prioritarias</span>
     <span class="sd-line"></span>
   </div>
